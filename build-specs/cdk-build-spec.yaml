@@ -1,5 +1,4 @@
-version 0.2
-
+version: 0.2
 phases:
   install:
     commands:
@@ -7,9 +6,8 @@ phases:
       - npm install
   build:
     commands:
-      - npm run build 
+      - npm run build
       - npm run cdk -- synth
-
 artifacts:
   base-directory: cdk.out
   files:

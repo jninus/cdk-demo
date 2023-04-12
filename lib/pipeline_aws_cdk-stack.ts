@@ -9,26 +9,20 @@ export class PipelineAwsCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'PipelineAwsCdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
-    const pipeline = new Pipeline(this, 'PipelineStack', {
-      pipelineName : 'Pipeline_Demo',
+    const pipeline = new Pipeline(this, 'Pipeline', {
+      pipelineName : 'Pipeline',
       crossAccountKeys: false
     })
 
-    const sourceOutput = new Artifact('SourceArtifact')
+    const sourceOutput = new Artifact('SourceOutput')
 
     pipeline.addStage({
       stageName: 'Source',
       actions: [
         new GitHubSourceAction({
           owner: 'jninus',
-          repo: 'aws-pipeline',
-          branch: 'master',
+          repo: 'cdk-demo',
+          branch: 'main',
           actionName: 'Pipeline_Source',
           oauthToken: cdk.SecretValue.secretsManager('github-token'),
           output: sourceOutput
