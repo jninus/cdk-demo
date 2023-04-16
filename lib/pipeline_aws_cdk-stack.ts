@@ -40,19 +40,31 @@ export class PipelineAwsCdkStack extends cdk.Stack {
     })
 
     const cdkBuildOutput = new Artifact('CdkBuildOutput')
+    const serviceBuildOutput = new Artifact('CdkBuildOutput')
 
     pipeline.addStage({
       stageName: 'Build',
       actions:[
         new CodeBuildAction({
           actionName: 'CDK_BUILD',
-          input: cdkSourceOutput,
+          input: serviceSourceOutput,
           outputs: [cdkBuildOutput],
           project: new PipelineProject(this, 'CdkBuildProject', {
             environment: {
               buildImage: LinuxBuildImage.STANDARD_5_0
             },
             buildSpec: BuildSpec.fromSourceFilename('build-specs/cdk-build-spec.yaml')
+          })
+        }),
+        new CodeBuildAction({
+          actionName: 'SERVICE_BUILD',
+          input: serviceSourceOutput,
+          outputs: [serviceBuildOutput],
+          project: new PipelineProject(this, 'ServiceBuildProject', {
+            environment: {
+              buildImage: LinuxBuildImage.STANDARD_5_0
+            },
+            buildSpec: BuildSpec.fromSourceFilename('build-specs/service-build-specs.yaml')
           })
         })
       ]
