@@ -52,15 +52,17 @@ export class PipelineAwsCdkStack extends cdk.Stack {
       stageName: 'Build',
       actions:[
         new CodeBuildAction({
-          actionName: 'CDK_BUILD',
+          actionName: "CDK_Build",
           input: cdkSourceOutput,
           outputs: [this.cdkBuildOutput],
-          project: new PipelineProject(this, 'CdkBuildProject', {
+          project: new PipelineProject(this, "CdkBuildProject", {
             environment: {
-              buildImage: LinuxBuildImage.STANDARD_5_0
+              buildImage: LinuxBuildImage.STANDARD_5_0,
             },
-            buildSpec: BuildSpec.fromSourceFilename('build-specs/cdk-build-spec.yaml')
-          })
+            buildSpec: BuildSpec.fromSourceFilename(
+              "build-specs/cdk-build-spec.yml"
+            ),
+          }),
         }),
         new CodeBuildAction({
           actionName: 'SERVICE_BUILD',
