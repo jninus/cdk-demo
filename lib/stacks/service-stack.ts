@@ -1,12 +1,12 @@
 import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
-import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
+import { CfnParametersCode, Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 import * as apigateway from "aws-cdk-lib/aws-apigateway"
 import { CfnHttpApi } from "aws-cdk-lib/aws-sam";
 import { LambdaProxyIntegration } from "@aws-cdk/aws-apigatewayv2-integrations";
 
 export class ServiceStack extends Stack {
-    public readonly serviceCode: Code
+    public readonly serviceCode: CfnParametersCode
     constructor(scope : Construct , id: string , props ?: StackProps){
         super(scope, id , props);
         this.serviceCode = Code.fromCfnParameters();
@@ -21,9 +21,6 @@ export class ServiceStack extends Stack {
         const api = new apigateway.RestApi(this, 'ServiceApi',  {
             restApiName : 'My API',
             description: 'example api gateway',
-            deployOptions: {
-              stageName: 'dev',
-            },
             // 👇 enable CORS
             defaultCorsPreflightOptions: {
               allowHeaders: [
