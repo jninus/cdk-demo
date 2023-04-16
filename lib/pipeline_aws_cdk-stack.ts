@@ -41,7 +41,7 @@ export class PipelineAwsCdkStack extends cdk.Stack {
     })
 
     const cdkBuildOutput = new Artifact('CdkBuildOutput')
-    const serviceBuildOutput = new Artifact('CdkBuildOutput')
+    const serviceBuildOutput = new Artifact('ServiceBuildOutput')
 
     pipeline.addStage({
       stageName: 'Build',
